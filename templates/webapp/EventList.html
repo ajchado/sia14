@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.14/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./events.css">
+<link rel="stylesheet" type="text/css" id="applicationStylesheet" href="{% static 'css/navbar.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/datatable.css' %}" />
+<script id="applicationScript" type="text/javascript" src="{% static 'js/datatable.js' %}"></script>
+
+</head>
+<body>
+	<header>
+		<a href="#" ><img src="{% static 'img/metro.jpg' %}" width="100px" height="100px" class="logo"></a>
+		<ul>
+			<li><a href="/webapp/home">Home</a></li>
+			<div class="dropdown2">
+				<button class="dropbtn2">User
+					<i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-content2">
+					<a href="/webapp/events">Events</a>
+					<a href="/webapp/users">My Events</a>
+					<a href="/webapp/notifications">Notifications</a>
+					</div>
+			</div>
+			{% if request.session.user.isOrganizer == 1 %}
+			<div class="dropdown2">
+				<button class="dropbtn2">Organizer
+					<i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-content2">
+
+						<a href="#">Manage Event</a>
+						<a href="#">Organize</a>
+
+			</div>
+				{% endif %}
+				{% if request.session.user.isAdmin == 1 %}
+			<div class="dropdown3">
+				<button class="dropbtn3">Administrator
+					<i class="fa fa-caret-down"></i>
+					</button>
+					<div class="dropdown-content3">
+						<a href="#">Manage Users</a>
+						<a href="#">Requests</a>
+					</div>
+			</div>
+				{% endif %}
+		</ul>
+	</header>
+	<div class="title">
+		<span>Events List</span>
+	</div>	
+
+	<!-- {% for e in events %}
+    {% if e.isDeleted == 0 %}
+	{% if e.isCanceled == 0 %}
+	
+		<div id="see_description">
+			<div id="view{{ e.id }}" class="modal">
+			<div id="Group_81">
+				<svg class="Rectangle_125">
+					<rect id="Rectangle_125" rx="5" ry="5" x="0" y="0" width="1330" height="673">
+					</rect>
+				</svg>
+				<svg class="Rectangle_126">
+					<rect id="Rectangle_126" rx="22" ry="22" x="0" y="0" width="1266" height="591">
+					</rect>
+				</svg>
+			</div>
+			<div id="Rey_Dominic_Tome">
+				<span>{% for org in e.organizer.all %}
+						{{ org.organizer.username }}
+					  {% endfor %}
+				</span>
+			</div>
+			<div id="-_Requesting_to_be_an_Administ">
+				<span>- {{ e.event_type }}</span>
+			</div>
+			<div id="March_22_2021_1230_am">
+				<span>{{ e.start_date | date:"F d, Y" }}, {{ e.start_time }}</span>
+			</div>
+			<div id="May_I_request_to_choochooo_in_">
+				<span>Description: {{ e.event_description }}<br>
+					Start Date: {{ e.start_date | date:"F d, Y" }}<br>
+					End Date: {{ e.end_date }}<br>
+					Start Time: {{ e.start_time }}<br>
+					End Time: {{ e.end_time }}<br>
+					Upvotes: {{ e.number_of_upvotes }}<br>
+				</span>
+			</div>
+			<form id="updateForm" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div id="Group_83">
+					<svg class="Rectangle_128">
+						<rect id="Rectangle_128" rx="30" ry="30" x="0" y="0" width="247" height="60">
+						</rect>
+					</svg>
+					<input type="text" name="user_id" value = "{{ request.session.user.id }}" hidden>
+					<input type="text" name="event_id" value = "{{ e.id }}" hidden>
+					<input type="submit" value="Join" id="request-accepted" name = "btnJoin">
+				</div>
+			</form>
+			<form id="updateForm" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div id="request-denied">
+					<svg class="Rectangle_127">
+						<rect id="Rectangle_127" rx="30" ry="30" x="0" y="0" width="247" height="60">
+						</rect>
+					</svg>
+					<input type="text" name="event_id" value = "{{ e.id }}" hidden>
+					<input type="submit" value="Review" id="Denied" name = "btnReview">
+				</div>
+			</form>
+			<div id="reply">
+				<svg class="Polygon_2" viewBox="0 0 51.962 50.856">
+					<path id="Polygon_2" d="M 25.98080444335938 0 L 51.96161270141602 50.85604858398438 L 0 50.85604858398438 Z">
+					</path>
+				</svg>
+				<svg class="Path_238" viewBox="16.5 3 18.242 18.242">
+					<path id="Path_238" d="M 34.74184417724609 3 L 16.5 21.24184226989746">
+					</path>
+				</svg>
+				<svg class="Path_239" viewBox="3 3 33.167 33.167">
+					<path id="Path_239" d="M 36.16698455810547 3 L 24.55854034423828 36.16698455810547 L 17.92514419555664 21.24184226989746 L 3 14.60844421386719 L 36.16698455810547 3 Z">
+					</path>
+				</svg>
+			</div>
+			<div id="minimize-desc">
+				<svg class="Rectangle_130">
+					<rect class = "close" id="Rectangle_130" rx="4.5" ry="4.5" x="0" y="0" width="56" height="9">
+					</rect>
+				</svg>
+				<svg class="Rectangle_131">
+					<rect class = "close" id="Rectangle_131" rx="4.5" ry="4.5" x="0" y="0" width="35" height="9">
+					</rect>
+				</svg>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	{% endif %}
+    {% endfor %} -->
+	
+	<!-- <div id="filter-section">
+		<form id="myFilter">
+		<svg class="Rectangle_159">
+			<rect id="Rectangle_159" rx="7" ry="7" x="0" y="0" width="815" height="290">
+			</rect>
+		</svg>
+		<div id="Group_108">
+			<div id="Status">
+				<span>Status</span>
+			</div>
+			<div id="Group_98">
+					<input  type="checkbox" id="check-pend" name="status" value="Pending">
+				<div id="Pending">
+					<span>Pending</span>
+				</div>
+
+			</div>
+			<div id="Group_100">
+				<input  type="checkbox" id="check-appro" name="status" value="Approved">
+				<div id="Approved">
+					<span>Approved</span>
+				</div>
+			</div>
+			<div id="Group_101">
+				<input  type="checkbox" id="check-canc" name="status" value="Cancelled">
+				<div id="Cancelled">
+					<span>Cancelled</span>
+				</div>
+			</div>
+		</div>
+		<svg class="Line_16" viewBox="0 0 682 1">
+			<path id="Line_16" d="M 0 0 L 682 0">
+			</path>
+		</svg>
+		<div id="Group_107">
+			<div id="Type">
+				<span>Type</span>
+			</div>
+			<div id="Group_102">
+				<input  type="checkbox" id="check-reg" name="type" value="Regular">
+				<div id="Regular">
+					<span>Regular</span>
+				</div>
+			</div>
+			<div id="Group_103">
+				<input  type="checkbox" id="check-org" name="type" value="Organizer">
+				<div id="Organizer">
+					<span>Organizer</span>
+				</div>
+			</div>
+			<div id="Group_104">
+					<input  type="checkbox" id="check-admin" name="type" value="Administrator">
+				<div id="Administrator">
+					<span>Administrator</span>
+				</div>
+			</div>
+		</div>
+		<svg class="Line_17" viewBox="0 0 682 1">
+			<path id="Line_17" d="M 0 0 L 682 0">
+			</path>
+		</svg>
+		<div id="Group_106">
+			<div id="Date">
+				<span>Date</span>
+			</div>
+			<input id="date-to" class="date-to" name="max" type="date">
+			<input id="date-from" class="date-from" name="min" type="date">
+		</div>
+		<svg class="Line_18" viewBox="0 0 15 1">
+			<path id="Line_18" d="M 0 0 L 15 0">
+			</path>
+		</svg>
+		<svg class="Line_19" viewBox="0 0 682 1">
+			<path id="Line_19" d="M 0 0 L 682 0">
+			</path>
+		</svg>
+		<div id="apply-filter">
+			<input id="Apply" onclick="applyFilter()" class="Apply" value="Apply">
+			<div id="cancel-filter" onload="delay()" class="cancel-filter">
+				<span>Cancel</span>
+			</div>
+			<div id="clear-filter" onclick="uncheckElements()" >
+				<span>Clear all Filters</span>
+			</div>
+		</div>
+	</form>
+	</div> -->
+
+	<div class="container p-30">
+        <div class="row">
+            <div class="col-md-12 main-datatable">
+                <div class="card_body">
+                    <div class="row d-flex">
+						{% if request.session.user.isAdmin == 1 or request.session.user.isOrganizer == 1 %}
+                        <div class="col-sm-4 createSegment"> 
+                            <a class="btn dim_button create_new" href="/webapp/events_registration"> <span class="glyphicon glyphicon-plus"></span> Create New</a>
+                        </div>
+						{% endif %}
+                        <div class="col-sm-8 add_flex">
+                            <div class="form-group searchInput">
+                                <label for="email">Search:</label>
+                                <input type="search" class="form-control" id="filterbox" placeholder=" ">
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="overflow-x">
+                        <table style="width:100%;" id="filtertable" class="table cust-datatable dataTable no-footer">
+                            <thead>
+                                <tr>
+									<th data-sortable="true">Start Date</th>
+									<th data-sortable="false">Start Time</th>
+									<th data-sortable="true">Event Name</th>
+									<th data-sortable="true">Status</th>
+									<th data-sortable="true">Participants</th>
+									<th data-sortable="true">Upvotes</th>
+									<th data-sortable="false">Action</th>
+								</tr>
+							</thead>
+            				<tbody>
+								{% for e in events %}
+								{% if e.isDeleted == 0 %}
+								{% if e.isCanceled == 0 %}
+								<tr>
+								<td>{{ e.start_date | date:"F d, Y" }}</td>
+								<td>{{ e.start_time }}</td>
+								<td>{{ e.event_name }}</td>
+								<td>{% if e.isCanceled == 0 %}
+									{% if e.isFinished == 0 %}
+									Ongoing
+									{% else %}
+									Finished
+									{% endif %}
+								{% else %}
+									Canceled
+								{% endif %}
+								</td>
+								<td>{{ e.number_of_participants }}</td>
+								<td>{{ e.number_of_upvotes }}</td>
+								<td>
+									<div class="btn-group">
+										 <a type="button" class="fa fa-pencil-square-o" href="#" data-toggle="modal" data-target="#newModal-{{e.id}}"></a>
+									</div>
+									<span class="btn-group">
+										<a href="{{ e.id }}""><i class="bi bi-eye""></i></a>
+									</span>
+									{% if request.session.user.isAdmin == 1 or request.session.user.isOrganizer == 1 %}
+									<div class="btn-group">
+										<a type="button" class="fa fa-trash" href="#" data-toggle="modal" data-target="#exampleModal-{{e.id}}"></a>
+									</div>
+									{% endif %}
+								</td>
+									    <!-- Modal VIEW-->
+	                  <div class="modal fade" id="newModal-{{e.id}}" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true" >
+	                    <div class="modal-dialog modal-lg" role="document">
+	                      <div class="modal-content">
+	                        <div class="modal-header">
+							   <h5 class="modal-title" id="exampleModalLabel">VIEW DETAILS</h5>
+							     <p class="close" data-dismiss="modal" aria-label="Close">
+							       <span aria-hidden="true">&times;</span>
+							      </p>
+							  </div>
+							   <form id="updateForm" method="post" >
+                        		{% csrf_token %}
+					         <div class="inputfield" >
+					          <label>Event Name :</label>
+					          <input type="text" style="color:black" name="event_name" value = {{e.event_name}}>
+							 </div>
+								   <div class="inputfield">
+					            <label>Event Descriptio :</label>
+					            <input type="text" class="input" style="color:black" name="event_description" value = {{e.event_description}}>
+					         </div>
+								   <div class="inputfield">
+					            <label>Event Type :</label>
+					            <input type="text" class="input" style="color:black" name="event_type" value = {{e.event_type}}>
+					         </div>
+								   <div class="inputfield">
+					            <label>Event Fee :</label>
+					            <input type="text" class="input" style="color:black" name="event_fee" value = {{e.event_fee}}>
+					         </div>
+								   <div class="inputfield">
+					            <label>Number of Reviews :</label>
+					            <input type="text" class="input" style="color:black" name="number_of_reviews" value = {{e.number_of_reviews}}>
+					         </div>
+								   <div class="inputfield">
+					            <label>Number of Participants :</label>
+					            <input type="text" class="input" style="color:black" name="number_of_participants" value = {{e.number_of_participants}}>
+					         </div>
+								   <div class="inputfield">
+					        	    <label>Number of Upvotes :</label>
+					            <input type="text" class="input" style="color:black" name="number_of_upvotes" value = {{e.number_of_upvotes}}>
+					         </div>
+								   <div class="inputfield">
+					            <label>Start Date :</label>
+					            <input type="date" class="input" style="color:black" name="start_date" value = {{e.start_date}}>
+					         </div>
+								   <div class="inputfield">
+					            <label>End Date :</label>
+					            <input type="date" class="input" style="color:black" name="end_date" value = {{e.end_date}}>
+					         </div>
+	                        <div class="modal-footer">
+								<div>
+
+								</div>
+							<form id="updateForm" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div id="Group_83">
+					<input type="text" name="user_id" value = "{{ request.session.user.id }}" hidden>
+					<input type="text" name="event_id" value = "{{ e.id }}" hidden>
+					<button type="submit" id = "btnJoin" name = "btnJoin" class="btn btn-primary">JOIN</button>
+				</div>
+
+			</form>
+							{% if request.session.user.isAdmin == 1 or request.session.user.isOrganizer == 1 %}
+                         	<button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+                          	<button type="submit" id = "btnUpdate" name = "btnUpdate" class="btn btn-primary">UPDATE</button>
+	                        </div>
+							{% endif %}
+	                      </div>
+	                  </form>
+	                    </div>
+	                  </div>
+							    <!-- Modal DELETE-->
+					    <div class="modal fade" id="exampleModal-{{e.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					      <div class="modal-dialog" role="document">
+					        <div class="modal-content">
+					          <div class="modal-header">
+					            <h5 class="modal-title" id="exampleModalLabel">DELETE RECORD</h5>
+					           <p class="close" data-dismiss="modal" aria-label="Close">
+					              <span aria-hidden="true">&times;</span>
+					            </p>
+					          </div>
+					      	<form id="deleteForm" method="post" >
+                        	{% csrf_token %}
+					          <div class="modal-body">
+								<input type="text" class="input" style="color:black" name="employee_id" value = {{e.id}} hidden="">
+					            Are you sure you want to delete this record?
+					          </div>
+					          <div class="modal-footer">
+	                         <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+	                          <button type="submit" id = "btnDelete" name = "btnDelete" class="btn btn-primary">YES</button>
+
+					          </div>
+					          </form>
+					        </div>
+					      	</div>
+					    </div>
+              		</div>
+								<!-- <td>
+                  				<button  href="#view{{ e.id }}" id="view_desc" class=" view_desc btn btn-info btn-sm modal-button">View</button>
+				<form action="" method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+					<input type="text" name="event_id" value = "{{ e.id }}" hidden>
+                    <input type="submit" id="trash_info" name="btnUpvote" class="btn btn-success btn-sm btn-delete modal-button" value="Upvote">
+                </form>
+				</td>
+				<td>
+
+				<form action="" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+					<input type="number" name="event_id" value = "{{ e.id }}" hidden>
+					 <input type="submit" name="btnReviews" class=" view_desc btn btn-info btn-sm modal-button" value="Reviews">
+				</form>
+
+
+				<form action="" method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+					  <input type="number" name="event_id" value = "{{ e.id }}" hidden>
+					  <input type="submit" id="trash_info" name="btnParticipants" class="btn btn-success btn-sm btn-delete modal-button" value="Participants">
+				  </form>
+				  </td> -->
+								</tr>
+								{% endif %}
+								{% endif %}
+								{% endfor %}
+            				</tbody>
+          				</table>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.14/js/jquery.dataTables.min.js"></script>
+</html>

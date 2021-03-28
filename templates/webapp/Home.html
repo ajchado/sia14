@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<link type="text/css" href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+<link type="text/css" href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" id="applicationStylesheet" href="{% static 'css/home_page.css' %}"/>
+<script id="applicationScript" type="text/javascript" src="{% static 'js/home_page.js' %}"></script>
+</head>
+<body">
+	<section>
+		<div class="circle"></div>
+		<header>
+			<a href="#" ><img src="{% static 'img/metro.jpg' %}" width="100px" height="100px" class="logo"></a>
+			<ul>
+				<li><a href="/webapp/home">Home</a></li>
+				<div class="dropdown">
+					<button class="dropbtn">User
+						<i class="fa fa-caret-down"></i>
+						</button>
+						<div class="dropdown-content">
+						<a href="/webapp/events">Events</a>
+						<a href="/webapp/users">My Events</a>
+						<a href="/webapp/notifications">Notifications</a>
+						</div>
+				</div>
+
+				<div class="dropdown2">
+					<button class="dropbtn2">Organizer
+						<i class="fa fa-caret-down"></i>
+						</button>
+						<div class="dropdown-content2">
+							<a href="/webapp/organizer">Manage Event</a>
+							<a href="/webapp/events_registration">Organize</a>
+
+				</div>
+
+					{% if request.session.user.isAdmin == 1 %}
+				<div class="dropdown3">
+					<button class="dropbtn3">Administrator
+						<i class="fa fa-caret-down"></i>
+						</button>
+						<div class="dropdown-content3">
+
+							<a href="/webapp/administrator_users">Manage Users</a>
+							<a href="/webapp/administrator">Requests</a>
+
+						</div>
+				</div>
+					{% endif %}
+			</ul>
+		</header>
+		<div class="content">
+			<div class="textBox">
+				<h2>HEY! Be a part of<br> <span>Metro Events</span></h2>
+				<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+					Dolore dolorum vero earum quas beatae ad tempore pariatur quos qui, 
+					eveniet et eligendi laboriosam fugit neque quaerat animi officia autem quibusdam?</p>
+				<button onclick="openCUForm()">Request Now!</button>
+	</section>
+	<div class="popup-overlay3"></div>
+    <div class="popup3">
+		<form action="" class="modal" method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="popup-close" onclick="closeCUForm()">&times;</div>
+			<div class="form3">
+				<div class="header3">
+				Request Form
+				</div>
+				<input type="hidden" required name="sender" value = "{{ request.session.user.id }}">
+				<input  type="text" required id="From" name="sender_username" placeholder="From" value = "{{ request.session.user.username }}" readonly>
+				<select required id="Type_of_Request" name="request_type" placeholder="Type of Request">
+					<option value="request_to_be_an_organizer">Request to be an organizer</option>
+					<option value="request_to_be_an_administrator">Request to be an administrator</option>
+				</select>
+				<textarea id="Compose_Mail" required type="message" cols="30" rows="10"  name="description" placeholder="Message"></textarea>
+				<input type="submit" value="Send Request" id="Send" name="btnSendRequest">
+		</form>
+</body>
+</html>

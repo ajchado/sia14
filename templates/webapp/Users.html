@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landing Page</title>
+<link rel="stylesheet" type="text/css" id="applicationStylesheet" href="{% static 'css/land_page.css' %}"/>
+<script id="applicationScript" type="text/javascript" src="{% static 'js/land_page.js' %}"></script>
+</head>
+<body>
+		<!-- <a href="Home.html"><div id="Metro_Events">
+			<span>Metro Events</span>
+		</div></a> -->
+		<section>
+			<div class="circle"></div>
+			<header>
+				<a href="#" ><img src="{% static 'img/metro.jpg' %}" width="100px" height="100px" class="logo"></a>
+				<ul>
+					<li><a href="#">Home</a></li>
+					<li><a href="#">Events</a></li>
+					<li><a href="#">Contact Us</a></li>
+					<li><button onclick="openLoginForm()">Login</button></li>
+				</ul>
+			</header>
+			<div class="content">
+				<div class="textBox">
+					<h2>Welcome to <br> <span>Metro Events</span></h2>
+					<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+						Dolore dolorum vero earum quas beatae ad tempore pariatur quos qui,
+						eveniet et eligendi laboriosam fugit neque quaerat animi officia autem quibusdam?</p>
+					<button onclick="openAUForm()">Sign Up</button>
+
+				</div>
+				<div class="imgBox">
+					<img src="{% static 'img/zumba.png' %}" class="starbucks">
+				</div>
+			</div>
+			<ul class="sci">
+				<li><a href="#"><img src="{% static 'img/facebook.png' %}"></a></li>
+				<li><a href="#"><img src="{% static 'img/twitter.png' %}"></a></li>
+				<li><a href="#"><img src="{% static 'img/instagram.png' %}"></a></li>
+			</ul>
+		</section>
+		<!-- modal -->
+		  <div class="popup-overlay"></div>
+		  <div class="popup">
+				<form action="" method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+				<div class="popup-close" onclick="closeLoginForm()">&times;</div>
+				<div class="form">
+				<div class="avatar">
+					<img src="{% static 'img/seulgi.png' %}">
+				</div>
+				<div class="header">
+					Member login
+				</div>
+				<div class="element">
+					<label for="username">Username</label>
+					<input required type="text" id="sign-in-user" name="user_username" placeholder="Username" required>
+				</div>
+				<div class="element">
+					<label for="password">Password</label>
+					<input type="password" id="sign-in-pass" name="user_password" placeholder="Password" required>
+				</div>
+				<div class="element">
+					<input type="submit" value="Log In" id="login-btn" name = "btnLogin">
+				</div>
+			</form>
+				</div>
+		  </div>
+		  <div class="popup-overlay2"></div>
+		  <div class="popup2">
+			<form action="" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+			<div class="popup-close" onclick="closeAUForm()">&times;</div>
+			<div class="form2">
+			  <div class="header2">
+				Register Form
+			  </div>
+			  	<div class="element2">
+					<label for="firstname">Firstname</label>
+					<input required type="text" id="sign-up-first" name="first_name" placeholder="Firstname">
+					<label for="middlename">Middlename</label>
+					<input type="text" id="sign-up-mid" name="middle_name" placeholder="Middlename">
+					<label for="lastname">Lastname</label>
+					<input required type="text" id="sign-up-last" name="last_name" placeholder="Lastname">
+					<label for="username">Username</label>
+					<input required type="text" id="sign-up-user" name="username" placeholder="Username">
+					<label for="email">Email</label>
+					<input required type="email" id="sign-up-email" name="email" placeholder="Email">
+					<label for="password">Password</label>
+					<input required type="password" id="sign-up-pass" name="password" placeholder="Password">
+					<label for="confirm_password">Confirm Password</label>
+					<input required type="password" id="sign-up-confirm-pass" name="confirm_password" placeholder="Confirm Password">
+					<input required type="submit" value="SIGN UP" id="sign-up-btn" name="btnRegister">
+				</div>
+			</form>
+			</div>
+		  </div>
+</body>
+</html>
